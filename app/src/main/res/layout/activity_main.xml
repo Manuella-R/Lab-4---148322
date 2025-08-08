@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+    <!-- Top App Bar -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="Landlord's Dashboard"
+        app:navigationIcon="@drawable/ic_menu"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvDashboardHeading"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:layout_marginTop="92dp"
+        android:text="Total Tenants Registered"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@+id/tvTotalRegisteredTenants"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTotalRentExpected" />
+
+    <TextView
+        android:id="@+id/tvTotalRegisteredTenants"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tvDashboardHeading"
+        app:layout_constraintTop_toTopOf="@+id/tvDashboardHeading" />
+
+    <TextView
+        android:id="@+id/tvTotalRentExpected"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="104dp"
+        android:text="Landord's Dashboard"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@+id/topAppBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/btnAddTenants"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="104dp"
+        android:backgroundTint="#03A9F4"
+        android:text="Add Tenants"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvDashboardHeading" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Navigation Drawer View (must be outside of the main layout) -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:menu="@menu/drawer_menu"
+        android:background="@android:color/white" />
+</androidx.drawerlayout.widget.DrawerLayout>
