@@ -1,4 +1,4 @@
-# Lab-4---148322  — ViewModel + LiveData + DataBinding
+# Lab-4-148322  — ViewModel + LiveData + DataBinding
 Submission for Lab 4
 
 Enabled data binding in build.gradle.
