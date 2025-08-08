@@ -8,48 +8,69 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
+import androidx.databinding.DataBindingUtil
+
 
 class AddTenant : AppCompatActivity() {
+    private lateinit var binding: AddtenantActivityBinding
+    private val viewModel: TenantViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.addtenant_activity)
-        Log.d("LIFECYCLE", "AddTenantActivity - onCreate")
+        binding = DataBindingUtil.setContentView(this, R.layout.addtenant_activity)
+        binding.lifecycleOwner = this          // important for LiveData bindings
+        binding.viewModel = viewModel          // connect the viewModel to layout
 
+        val fullName = binding.fullName
+        val unitNumber = binding.unitNumber
+        val fullRent = binding.fullRent
 
-        val btnBack = findViewById<Button>(R.id.btnBack)
+        binding.button.setOnClickListener {
+            val name = fullName.text.toString()
+            val unit = unitNumber.text.toString()
+            val rent = fullRent.text.toString()
+            viewModel.addTenant(name, unit, rent)
+            fullName.text.clear()
+            unitNumber.text.clear()
+            fullRent.text.clear()
+        }
 
-        btnBack.setOnClickListener {
-            val totalTenants = 1
-            val totalRent = 5000
-
+        binding.btnBack.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
-            intent.putExtra("TotalTenants",totalTenants)
-            intent.putExtra("TotalRent", totalRent)
             startActivity(intent)
+            finish()
         }
-
-
-        val tvDisplayTenantInfo = findViewById<TextView>(R.id.tvAddTenantInfo)
-        val btnAddTenant = findViewById<Button>(R.id.button)
-        val fullName = findViewById<EditText>(R.id.fullName)
-        val unitNumber = findViewById<EditText>(R.id.unitNumber)
-        val fullRent = findViewById<EditText>(R.id.fullRent)
-
-        btnAddTenant.setOnClickListener {
-
-            val etFullName = fullName.text.toString()
-            val etUnitNumber = unitNumber.text.toString()
-            val etFullRent = fullRent.text.toString()
-
-            val tenantInfo = "Name: $etFullName\nUnit: $etUnitNumber\nRent: $etFullRent\n\n"
-            tvDisplayTenantInfo.append(tenantInfo)
-        }
-
-
-
-
     }
+}
+
+
+
+    class TenantViewModel : ViewModel() {
+
+        // Internal mutable storage for tenant info as a single text block
+        private val _tenantInfo = MutableLiveData<String>("")
+        val tenantInfo: LiveData<String> = _tenantInfo
+
+        // Exposed transformed LiveData (uppercase display) — bonus step
+        val capitalizedTenantInfo: LiveData<String> = tenantInfo.map { it.uppercase() }
+
+        // Tenant counter (bonus)
+        private val _tenantCount = MutableLiveData(0)
+        val tenantCount: LiveData<Int> = _tenantCount
+
+        fun addTenant(name: String, unit: String, rent: String) {
+            val newEntry = "Name: $name\nUnit: $unit\nRent: $rent\n\n"
+            _tenantInfo.value = (_tenantInfo.value ?: "") + newEntry
+
+            // increment count
+            _tenantCount.value = (_tenantCount.value ?: 0) + 1
+        }
+    }
+
     override fun onStart() {
         super.onStart()
         Log.d("LIFECYCLE", "SecondActivity - onStart")
